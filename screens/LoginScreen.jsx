@@ -12,15 +12,16 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const { setUser } = useAuthContext();
+  const { login } = useAuthContext();
 
-  const login = () => {
-    if (email && password)
-      setUser({
-        name: "Tarek",
-        email: "gt_arar@esi.dz",
-      });
-    else setError(true);
+  const loginUser = () => {
+    if (email && password) {
+      try {
+        login(email, password);
+      } catch {
+        setError(true);
+      }
+    } else setError(true);
   };
 
   return (
@@ -53,7 +54,7 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity>
         <Text style={styles.forgot}>Forgot Password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginBtn} onPress={login}>
+      <TouchableOpacity style={styles.loginBtn} onPress={loginUser}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
       <TouchableOpacity>
@@ -62,6 +63,7 @@ export default function LoginScreen({ navigation }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

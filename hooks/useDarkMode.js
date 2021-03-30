@@ -1,0 +1,3 @@
+function userDarkMode() {
+  return true;
+}
