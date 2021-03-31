@@ -10,19 +10,21 @@ var firebaseConfig = {
   measurementId: "G-ZQ3QV8ZD3G",
 };
 // Initialize Firebase
-const firebaseInstance = firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app(); // if already initialized, use that one
+}
+// const firebaseInstance = firebase.initializeApp(firebaseConfig);
 // firebase.analytics();
 
 const loginUser = (email, password) =>
-  firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(() => this.props.navigation.navigate("Profile"))
-    .catch((error) => console.log(error));
+  firebase.auth().signInWithEmailAndPassword(email, password);
 
-const getClasses = async () => {
+const getProfessorClasses = async (professorEmail) => {
   const classesRef = db.collection("Classes");
-  const snapshot = await classesRef.get();
+  const snapshot = await classesRef.where({ professorEmail }).get();
+
   const classes = [];
   snapshot.forEach((doc) => {
     classes.push(doc.data());
@@ -31,4 +33,4 @@ const getClasses = async () => {
   return classes;
 };
 
-export { loginUser, getClasses };
+export { loginUser, getProfessorClasses };

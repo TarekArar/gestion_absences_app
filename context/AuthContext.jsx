@@ -9,36 +9,37 @@ const initialState = {
 const AuthContext = createContext(initialState);
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
 
-  // const checkJwtToken = () => {
-  //   checkJWT()
-  //     .then((response) => {
-  //       setUser(response.data.user);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const checkAuth = async () => {
+    const uid = await SecureStore.getItemAsync("uid");
+    setUser({
+      uid,
+    });
+  };
 
-  // const checkTokenIfExists = async () => {
-  //   const token = await SecureStore.getItemAsync("secure_token");
-  //   if (token) checkJwtToken();
-  // };
-
-  // useEffect(() => {
-  //   checkTokenIfExists();
-  // }, []);
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const login = async (email, password) => {
-    const response = await loginUser(email, password);
-    // await SecureStore.setItemAsync("secure_token", response.data.token);
-    setUser(true);
+    try {
+      const response = await loginUser(email, password);
+      await SecureStore.setItemAsync("uid", response.user.uid);
+      const user = {
+        uid: response.user.uid,
+        email: response.user.email,
+      };
+      setUser(user);
+      return true;
+    } catch (err) {
+      return false;
+    }
   };
 
   const logout = async () => {
-    // await SecureStore.deleteItemAsync("secure_token");
-    setUser(false);
+    await SecureStore.deleteItemAsync("uid");
+    setUser(null);
   };
 
   return (

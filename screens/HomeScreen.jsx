@@ -1,39 +1,47 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useMemo } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import CalendarStrip from "react-native-calendar-strip";
-import ClassList from "../components/ClassList";
+import ClassList from "../components/Classes/ClassList";
 import * as firebase from "firebase";
+import { useAuthContext } from "../context/AuthContext";
 
 const db = firebase.firestore();
 
-// import { db } from "../services/firebaseService";
+const getDayName = (date) => {
+  var days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  var dayName = days[date.getDay()];
+  return dayName;
+};
 
 export default function HomeScreen({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [classes, setClasses] = useState([]);
 
+  const { user, logout } = useAuthContext();
+
   const retrieverClasses = async () => {
-    const classesRef = db.collection("cities");
-    const snapshot = await classesRef.get();
+    const classesRef = db.collection("Classes");
+    const snapshot = await classesRef.where("profId", "==", user.uid).get();
+
     const tempClasses = [];
     snapshot.forEach((doc) => {
-      tempClasses.push(doc.data());
-      //   console.log(doc.id, "=>", doc.data());
+      tempClasses.push({ id: doc.id, ...doc.data() });
     });
+    // const tempClasses = await getProfessorClasses(user.email);
     setClasses(tempClasses);
   };
 
   useEffect(() => {
     retrieverClasses();
-  }, [date]);
+  }, []);
 
   const selectedClasses = useMemo(() => {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    // const month = date.getMonth() + 1;
+    const day = getDayName(date);
 
-    return data.filter((el) => el.day == day && el.month == month);
+    return classes.filter((el) => el.day == day);
   }, [date]);
   return (
     <View>
@@ -45,25 +53,13 @@ export default function HomeScreen({ navigation }) {
           style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
           highlightDateContainerStyle={{ backgroundColor: "aqua", padding: 2 }}
         />
+        {/* <Button onPress={logout} title="logout" /> */}
       </View>
       <ClassList
-        onPress={() => navigation.navigate("Groupe")}
+        navigation={navigation}
         classes={selectedClasses}
+        date={date}
       />
-      <Text>{JSON.stringify(classes)}</Text>
     </View>
   );
 }
-
-const data = [
-  { id: 1, day: 29, month: 3 },
-  { id: 10, day: 30, month: 3 },
-  { id: 2, day: 30, month: 3 },
-  { id: 3, day: 30, month: 3 },
-  { id: 4, day: 31, month: 3 },
-  { id: 5, day: 31, month: 3 },
-  { id: 6, day: 1, month: 4 },
-  { id: 7, day: 1, month: 4 },
-  { id: 8, day: 2, month: 4 },
-  { id: 9, day: 2, month: 4 },
-];

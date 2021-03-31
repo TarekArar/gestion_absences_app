@@ -16,11 +16,8 @@ export default function LoginScreen({ navigation }) {
 
   const loginUser = () => {
     if (email && password) {
-      try {
-        login(email, password);
-      } catch {
-        setError(true);
-      }
+      const verifyCredentials = login(email, password);
+      if (!verifyCredentials) setError(true);
     } else setError(true);
   };
 

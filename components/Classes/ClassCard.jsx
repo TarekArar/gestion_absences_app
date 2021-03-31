@@ -12,22 +12,24 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function ClassCard({ item, onPress }) {
-  const eventClickListener = (viewId) => {
-    Alert.alert("alert", "event clicked");
+export default function ClassCard({ item }) {
+  const navigateToGroupe = () => {
+    item.navigation.navigate("Groupe", {
+      groupe: item.groupe,
+      classId: item.id,
+      date: item.date,
+    });
   };
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={navigateToGroupe}>
       <View style={styles.eventBox}>
-        <View style={styles.eventDate}>
-          <Text style={styles.eventDay}>{item.day}</Text>
-          <Text style={styles.eventMonth}>{item.month}</Text>
-        </View>
         <View style={styles.eventContent}>
-          <Text style={styles.eventTime}>10:00 am - 10:45 am</Text>
-          <Text style={styles.userName}>eTD ANAD</Text>
-          <Text style={styles.description}>2CS SIT3</Text>
+          <Text style={styles.eventTime}>
+            {item.startsAt} - {item.endsAt}
+          </Text>
+          <Text style={styles.userName}>{item.module}</Text>
+          <Text style={styles.description}>Groupe: {item.groupe}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -39,6 +41,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 5,
     marginBottom: 5,
+    paddingBottom: 5,
     flexDirection: "row",
   },
   eventDate: {
