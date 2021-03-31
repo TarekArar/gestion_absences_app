@@ -36,7 +36,7 @@ export default function AbsencesCard({
           </View>
           <View style={styles.nameContainer}>
             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
-              module: {module}
+              {module}
             </Text>
 
             {justified ? (

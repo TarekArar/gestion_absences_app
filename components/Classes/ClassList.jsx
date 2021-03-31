@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import ClassCard from "./ClassCard";
 
-const ClassList = ({ classes, navigation, date }) => {
+const ClassList = ({ classes, navigation, module, date }) => {
   const classesWithDate = classes.map((el, index) => ({
     id: el.id,
     module: el.module,
@@ -18,9 +18,11 @@ const ClassList = ({ classes, navigation, date }) => {
     navigation: navigation,
     date: date,
   }));
+  // .sort(
+  //   (a, b) => Number(a.startsAt.substr(0, 1)) > Number(b.startsAt.substr(0, 1))
+  // );
   return (
     <View style={styles.container}>
-      {/* <Text>{JSON.stringify(classesWithDate, null, 4)}</Text> */}
       <FlatList
         style={styles.eventList}
         data={classesWithDate}

@@ -9,7 +9,7 @@ const db = firebase.firestore();
 
 export default function GroupeScreen({ navigation, route }) {
   const [students, setStudents] = useState([]);
-  const { groupe, classId, date } = route.params;
+  const { groupe, classId, date, mada } = route.params;
 
   const retrieveStudents = async () => {
     const groupeRef = db.collection("Groupe").doc(groupe);
@@ -33,6 +33,7 @@ export default function GroupeScreen({ navigation, route }) {
         classId={classId}
         date={date}
         groupe={groupe}
+        module={mada}
       />
     </ScrollView>
   );

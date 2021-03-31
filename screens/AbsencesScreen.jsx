@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Button } from "react-native";
 import CalendarStrip from "react-native-calendar-strip";
 import AbsencesList from "../components/Absences/AbsencesList";
 
 import * as firebase from "firebase";
+import { useAuthContext } from "../context/AuthContext";
 
 const db = firebase.firestore();
 
 export default function AbsencesScreen() {
   const [date, setDate] = useState(new Date());
   const [absences, setAbsences] = useState([]);
+  const { logout } = useAuthContext();
   const getAbsences = async () => {
     const snapshot = await db
       .collection("Absences")
@@ -40,7 +42,6 @@ export default function AbsencesScreen() {
           style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
           highlightDateContainerStyle={{ backgroundColor: "aqua", padding: 2 }}
         />
-        {/* <Button onPress={logout} title="logout" /> */}
       </View>
 
       <AbsencesList

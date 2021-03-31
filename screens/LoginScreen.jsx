@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -54,9 +55,9 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.loginBtn} onPress={loginUser}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Text style={styles.loginText}>Signup</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

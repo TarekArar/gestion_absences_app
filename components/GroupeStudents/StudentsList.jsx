@@ -16,7 +16,13 @@ import * as Progress from "react-native-progress";
 
 const db = firebase.firestore();
 
-export default function StudentsList({ students, classId, date, groupe }) {
+export default function StudentsList({
+  students,
+  classId,
+  date,
+  groupe,
+  module,
+}) {
   const [absences, setAbsences] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -91,6 +97,7 @@ export default function StudentsList({ students, classId, date, groupe }) {
         classId: classId,
         date: date,
         groupe: groupe,
+        module: module,
         studentAbsences: absences,
       });
   };

@@ -16,6 +16,7 @@ export default function ClassCard({ item }) {
   const navigateToGroupe = () => {
     item.navigation.navigate("Groupe", {
       groupe: item.groupe,
+      mada: item.module,
       classId: item.id,
       date: item.date,
     });

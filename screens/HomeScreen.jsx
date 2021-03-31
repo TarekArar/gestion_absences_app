@@ -53,7 +53,6 @@ export default function HomeScreen({ navigation }) {
           style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
           highlightDateContainerStyle={{ backgroundColor: "aqua", padding: 2 }}
         />
-        {/* <Button onPress={logout} title="logout" /> */}
       </View>
       <ClassList
         navigation={navigation}
