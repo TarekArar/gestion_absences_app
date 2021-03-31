@@ -16,7 +16,7 @@ import * as Progress from "react-native-progress";
 
 const db = firebase.firestore();
 
-export default function StudentsList({ students, classId, date }) {
+export default function StudentsList({ students, classId, date, groupe }) {
   const [absences, setAbsences] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,23 +78,21 @@ export default function StudentsList({ students, classId, date }) {
       .where("classId", "==", classId)
       .where("date", "==", date)
       .get();
-    if (snapshot.empty) {
+
+    if (!snapshot.empty) {
+      const docs = [];
+      snapshot.forEach((doc) => {
+        docs.push(doc.id);
+      });
+      await db.collection("Absences").doc(docs[0]).delete();
+    }
+    if (absences != [])
       await db.collection("Absences").add({
         classId: classId,
         date: date,
+        groupe: groupe,
         studentAbsences: absences,
       });
-    } else {
-      await db.collection("Absences").doc(snapshot.id).set({
-        classId: classId,
-        date: date,
-        studentAbsences: absences,
-      });
-    }
-    // const res = await db.collection("cities").add({
-    //   name: "Tokyo",
-    //   country: "Japan",
-    // });
   };
 
   // if (!studentsWithIds)

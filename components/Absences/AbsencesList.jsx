@@ -39,6 +39,7 @@ export default function AbsencesList({ absences }) {
             <AbsencesCard
               key={`${i}${index}`}
               module={absenceObject.module}
+              groupe={absenceObject.groupe}
               name={el.name}
               imageURI={el.imageURI}
               isJustified={el.isJustified}

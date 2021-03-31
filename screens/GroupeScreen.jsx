@@ -28,7 +28,12 @@ export default function GroupeScreen({ navigation, route }) {
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{groupe}</Text>
       </View>
-      <StudentsList students={students} classId={classId} date={date} />
+      <StudentsList
+        students={students}
+        classId={classId}
+        date={date}
+        groupe={groupe}
+      />
     </ScrollView>
   );
 }

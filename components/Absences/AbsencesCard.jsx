@@ -1,17 +1,24 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Button,
-  StyleSheet,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Button } from "native-base";
 
-export default function AbsencesCard({ name, imageURI, isJustified, module }) {
+export default function AbsencesCard({
+  name,
+  imageURI,
+  isJustified,
+  module,
+  groupe,
+}) {
+  const [justified, setJustified] = useState(isJustified);
   return (
-    <TouchableOpacity>
-      <View style={styles.row}>
+    <TouchableOpacity
+      style={{
+        borderLeftWidth: 8,
+        borderLeftColor: justified ? "#008B8B" : "red",
+        marginBottom: 5,
+      }}
+    >
+      <View style={[styles.row]}>
         <Image
           source={{
             uri:
@@ -25,9 +32,26 @@ export default function AbsencesCard({ name, imageURI, isJustified, module }) {
             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
               {name}
             </Text>
+            <Text style={styles.description}>Groupe: {groupe}</Text>
+          </View>
+          <View style={styles.nameContainer}>
             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
               module: {module}
             </Text>
+
+            {justified ? (
+              <Text style={[styles.msgTxt, { color: "#008B8B" }]}>
+                Justifie
+              </Text>
+            ) : (
+              <Button
+                primary
+                onPress={() => setJustified(!justified)}
+                style={{ paddingLeft: 4, paddingRight: 4 }}
+              >
+                <Text style={{ color: "white" }}>Justifier absence</Text>
+              </Button>
+            )}
           </View>
           <View style={styles.msgContainer}>
             {/* <Text
@@ -35,7 +59,6 @@ export default function AbsencesCard({ name, imageURI, isJustified, module }) {
             >
               {isSelected ? "" : "Absent"}
             </Text> */}
-            <Button title="Justifier absence" />
           </View>
         </View>
       </View>
@@ -59,7 +82,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     width: 280,
   },
   nameTxt: {
@@ -81,8 +104,11 @@ const styles = StyleSheet.create({
   msgTxt: {
     fontWeight: "400",
     // color: "#008B8B",
-    fontSize: 12,
-    marginLeft: 15,
+    fontSize: 15,
+  },
+  description: {
+    fontSize: 15,
+    color: "#646464",
   },
   //   checkboxContainer: {
   //     flexDirection: "row",
